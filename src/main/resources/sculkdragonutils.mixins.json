@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "com.sculkdragonutils.sculkdragonutilsmod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "SculkSensorMixin",
+    "SculkWardenVibrationMixin",
+    "SculkWardenMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
