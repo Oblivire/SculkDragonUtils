@@ -41,7 +41,7 @@ displayName="Sculk Dragon Utils" #mandatory
 #credits="" #optional
 
 # A text field displayed in the mod UI
-authors="Robin" #optional
+authors="Oblivire" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''${mod_description}'''
