@@ -1,16 +1,25 @@
 
-Installation information
+Overview
 =======
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+This is a Neoforged Minecraft mod intended for use with the Echo Sculk Dragon (https://www.curseforge.com/minecraft/mc-mods/echo-sculk-dragon-for-dragon-survival)
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+Despite this, you can use it anywhere you want, too.  It adds a number of MobEffects that you can add with /effect or other methods.
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+List of MobEffects:
+
+sculkdragonutils:sculk_harmony - This suppresses vibrations of whatever the potency is, and below
+
+sculkdragonutils:warden_harmony - This prevents the Warden from targeting whatever has it
+
+sculkdragonutils:sculk_sight - This adds the Sobel shader from the 1.9 SuperSecretSettings
+
+sculkdragonutils:reverberating - This is a dummy effect that does nothing, but Sculk Shriekers will apply it to nearby mobs.
+You can use this as a trigger or check for other things.
+
+Credits:
+============
+Code for the Sobel shader implementation is from the Goggles mod (https://modrinth.com/mod/goggles)
 
 Mapping Names:
 ============
