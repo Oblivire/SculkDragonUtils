@@ -19,7 +19,7 @@ You can use this as a trigger or check for other things.
 
 Credits:
 ============
-Code for the Sobel shader implementation is from the Goggles mod (https://modrinth.com/mod/goggles)
+Code for the Sobel shader implementation is from the Goggles mod (https://modrinth.com/mod/goggles) by IceWasTaken
 
 Mapping Names:
 ============
