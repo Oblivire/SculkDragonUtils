@@ -20,6 +20,7 @@ You can use this as a trigger or check for other things.
 Credits:
 ============
 Code for the Sobel shader implementation is from the Goggles mod (https://modrinth.com/mod/goggles) by IceWasTaken
+Also because the code is the same, it's unfortunately not compatible...  I will potentially look into compatibility later.
 
 Mapping Names:
 ============
