@@ -8,7 +8,7 @@ Despite this, you can use it anywhere you want, too.  It adds a number of MobEff
 
 List of MobEffects:
 
-sculkdragonutils:sculk_harmony - This suppresses vibrations of whatever the potency is, and below. It also prevents sculk sensors from activating when you walk on them.
+sculkdragonutils:sculk_harmony - This suppresses vibrations of whatever the potency is, and below. In version 1.1, it also prevents sculk sensors from activating when you walk on them.
 
 sculkdragonutils:warden_harmony - This prevents the Warden from targeting whatever has it
 
@@ -17,7 +17,7 @@ sculkdragonutils:sculk_sight - This adds the Sobel shader from the 1.9 SuperSecr
 sculkdragonutils:reverberating - This is a dummy effect that does nothing, but Sculk Shriekers will apply it to nearby mobs.
 You can use this as a trigger or check for other things.
 
-List of Commands:
+List of Commands (v1.1 only):
 
 /sculk-bloom <x> <y> <z> <amount> - This is a command that triggers a sculk bloom (like from the sculk catalyst) at the specified location.
 
