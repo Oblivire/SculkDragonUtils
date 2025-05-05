@@ -1,5 +1,6 @@
 package com.sculkdragonutils.sculkdragonutilsmod;
 
+import com.sculkdragonutils.sculkdragonutilsmod.commands.SculkBloomCommand;
 import com.sculkdragonutils.sculkdragonutilsmod.common.packet.PayloadHandler;
 import com.sculkdragonutils.sculkdragonutilsmod.common.packet.SculkShaderPacket;
 import com.sculkdragonutils.sculkdragonutilsmod.effect.ModEffects;
@@ -69,6 +70,7 @@ public class SculkDragonUtils
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         //NeoForge.EVENT_BUS.register(this);
         NeoForge.EVENT_BUS.register(new EventHandler());
+        NeoForge.EVENT_BUS.register(SculkDragonUtilsCommands.class);
 
         //Register effect(s)
         ModEffects.register(modEventBus);

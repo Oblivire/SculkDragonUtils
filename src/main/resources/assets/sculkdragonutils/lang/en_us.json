@@ -2,5 +2,6 @@
   "effect.sculkdragonutils.sculk_harmony": "Sculk Harmony",
   "effect.sculkdragonutils.warden_harmony": "Warden Harmony",
   "effect.sculkdragonutils.reverberating": "Reverberating",
-  "effect.sculkdragonutils.sculk_sight": "Sculk Sight"
+  "effect.sculkdragonutils.sculk_sight": "Sculk Sight",
+  "commands.sculkbloom.success": ""
 }
