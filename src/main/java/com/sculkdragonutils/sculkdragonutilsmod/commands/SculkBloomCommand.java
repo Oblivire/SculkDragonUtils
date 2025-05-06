@@ -31,12 +31,12 @@ public class SculkBloomCommand {
                         1
                         )
                     ).then(
-                        Commands.argument("amount", IntegerArgumentType.integer(1)
+                        Commands.argument("charge", IntegerArgumentType.integer(1)
                     ).executes(
                         (command) -> bloomCommand(
                                 command.getSource(),
                                 Vec3Argument.getCoordinates(command, "at"),
-                                IntegerArgumentType.getInteger(command, "amount"),
+                                IntegerArgumentType.getInteger(command, "charge"),
                                 1
                         )
                         ).then(
@@ -45,7 +45,7 @@ public class SculkBloomCommand {
                             (command) -> bloomCommand(
                                 command.getSource(),
                                 Vec3Argument.getCoordinates(command, "at"),
-                                IntegerArgumentType.getInteger(command, "amount"),
+                                IntegerArgumentType.getInteger(command, "charge"),
                                 IntegerArgumentType.getInteger(command, "cursors")
                                 )
                             )
@@ -55,7 +55,7 @@ public class SculkBloomCommand {
         );
     }
 
-    private static int bloomCommand(CommandSourceStack source, Coordinates at, int amount, int cursors) throws CommandSyntaxException {
+    private static int bloomCommand(CommandSourceStack source, Coordinates at, int charge, int cursors) throws CommandSyntaxException {
         // Code extrapolated from net.minecraft.server.commands.TeleportCommand.teleportToPos
         Vec3 vec3 = at.getPosition(source);
         ServerLevel level = source.getLevel();
@@ -74,7 +74,7 @@ public class SculkBloomCommand {
         }
 
         SculkBloomInst bloomInst = new SculkBloomInst(level, vec3, set);
-        bloomInst.addCursors(amount, cursors);
+        bloomInst.addCursors(charge, cursors);
         EventHandler.addBloom(bloomInst);
 
         return 0;

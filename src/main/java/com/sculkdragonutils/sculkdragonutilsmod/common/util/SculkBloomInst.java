@@ -9,7 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 //import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.RelativeMovement;
-import net.minecraft.world.entity.player.Player;
+//import net.minecraft.world.entity.player.Player;
 //import net.minecraft.world.level.block.Blocks;
 //import net.minecraft.world.level.block.SculkShriekerBlock;
 import net.minecraft.world.level.block.SculkSpreader;
@@ -34,11 +34,11 @@ public class SculkBloomInst {
         this.randomsource = level.getRandom();
     }
 
-    public void addCursors(int amount, int cursorNum) {
+    public void addCursors(int charge, int cursorNum) {
         level.sendParticles(ParticleTypes.SCULK_SOUL, vec3.x + (double)0.5F, vec3.y + 1.15, vec3.z + (double)0.5F, 2, 0.2, 0.0F, 0.2, 0.0F);
         level.playSound(null, blockpos, SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.BLOCKS, 2.0F, 0.6F + randomsource.nextFloat() * 0.4F);
         for (int k = 0; k < cursorNum; k++) {
-            sculkSpreader.addCursors(blockpos, amount);
+            sculkSpreader.addCursors(blockpos, charge);
         }
     }
 
