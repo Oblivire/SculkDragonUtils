@@ -1,7 +1,7 @@
 package com.sculkdragonutils.sculkdragonutilsmod;
 
-import com.sculkdragonutils.sculkdragonutilsmod.common.packet.PayloadHandler;
 import com.sculkdragonutils.sculkdragonutilsmod.common.packet.SculkShaderPacket;
+import com.sculkdragonutils.sculkdragonutilsmod.common.util.SculkBloomInst;
 import com.sculkdragonutils.sculkdragonutilsmod.common.util.ShaderUtil;
 import com.sculkdragonutils.sculkdragonutilsmod.effect.ModEffects;
 import net.minecraft.core.Holder;
@@ -15,14 +15,16 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.VanillaGameEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
-import net.neoforged.neoforge.network.handling.DirectionalPayloadHandler;
-import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventHandler {
+    private static final List<SculkBloomInst> blooms = new ArrayList<>();
+    private static final List<SculkBloomInst> toRemove = new ArrayList<>();
+
     @SubscribeEvent
     public void onShriek(VanillaGameEvent event) {
         Holder<GameEvent> vanilla_event = event.getVanillaEvent();
@@ -68,5 +70,23 @@ public class EventHandler {
                 PacketDistributor.sendToPlayer((ServerPlayer) event.getEntity(), new SculkShaderPacket(false));
             }
         }
+    }
+    @SubscribeEvent
+    public void onServerTick(ServerTickEvent.Post event) {
+        for (SculkBloomInst bloomInst: blooms) {
+            bloomInst.update();
+            if (bloomInst.isDone()) {
+                bloomInst.clear();
+                toRemove.add(bloomInst);
+            }
+        }
+        for (SculkBloomInst doneInst: toRemove) {
+            blooms.remove(doneInst);
+        }
+        toRemove.clear();
+    }
+
+    public static void addBloom(SculkBloomInst bloomInst) {
+        blooms.add(bloomInst);
     }
 }
