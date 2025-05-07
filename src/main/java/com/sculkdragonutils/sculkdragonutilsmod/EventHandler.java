@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static net.minecraft.util.Mth.floor;
+
 public class EventHandler {
     private static final List<SculkBloomInst> blooms = new ArrayList<>();
     private static final List<SculkBloomInst> toRemove = new ArrayList<>();
@@ -87,10 +89,10 @@ public class EventHandler {
             Level level = target.level();
             if (SculkBloomInst.canSpreadFrom(level, target_loc)) {
                 if (!level.isClientSide()) {  // Only bloom on server
-                    int potency = Objects.requireNonNull(player.getEffect(ModEffects.SCULK_BLOOM_EFFECT)).getAmplifier();
+                    float potency = Objects.requireNonNull(player.getEffect(ModEffects.SCULK_BLOOM_EFFECT)).getAmplifier();
                     SculkBloomInst newInst = new SculkBloomInst((ServerLevel) level, target_loc.getCenter(), null);
                     newInst.bloomParticles(player.blockPosition().getCenter());
-                    newInst.addCursors(exp * (1 + potency / 10), 1);
+                    newInst.addCursors(floor(exp * (1.0F + (potency / 10.0F))), 1);
                     addBloom(newInst);
                 }
                 event.setCanceled(true);  // Cancel on both client and server
