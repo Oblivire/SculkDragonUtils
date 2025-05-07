@@ -92,7 +92,7 @@ public class EventHandler {
                     float potency = Objects.requireNonNull(player.getEffect(ModEffects.SCULK_BLOOM_EFFECT)).getAmplifier();
                     SculkBloomInst newInst = new SculkBloomInst((ServerLevel) level, target_loc.getCenter(), null);
                     newInst.bloomParticles(player.blockPosition().getCenter());
-                    newInst.addCursors(floor(exp * (1.0F + (potency / 10.0F))), 1);
+                    newInst.addCursors(floor(exp * (1.0F + (potency * 0.1F))), 1);
                     addBloom(newInst);
                 }
                 event.setCanceled(true);  // Cancel on both client and server
