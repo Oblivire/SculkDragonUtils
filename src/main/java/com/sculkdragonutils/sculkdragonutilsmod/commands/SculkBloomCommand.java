@@ -1,5 +1,6 @@
 package com.sculkdragonutils.sculkdragonutilsmod.commands;
 
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.sculkdragonutils.sculkdragonutilsmod.EventHandler;
@@ -28,16 +29,18 @@ public class SculkBloomCommand {
                         command.getSource(),
                         Vec3Argument.getCoordinates(command, "at"),
                         1,
-                        1
+                        1,
+                        false
                         )
                     ).then(
                         Commands.argument("charge", IntegerArgumentType.integer(1)
                     ).executes(
                         (command) -> bloomCommand(
-                                command.getSource(),
-                                Vec3Argument.getCoordinates(command, "at"),
-                                IntegerArgumentType.getInteger(command, "charge"),
-                                1
+                            command.getSource(),
+                            Vec3Argument.getCoordinates(command, "at"),
+                            IntegerArgumentType.getInteger(command, "charge"),
+                            1,
+                            false
                         )
                         ).then(
                             Commands.argument("cursors", IntegerArgumentType.integer(1, 10)
@@ -46,7 +49,19 @@ public class SculkBloomCommand {
                                 command.getSource(),
                                 Vec3Argument.getCoordinates(command, "at"),
                                 IntegerArgumentType.getInteger(command, "charge"),
-                                IntegerArgumentType.getInteger(command, "cursors")
+                                IntegerArgumentType.getInteger(command, "cursors"),
+                                false
+                                )
+                            ).then(
+                                Commands.argument("worldgen", BoolArgumentType.bool()
+                                ).executes(
+                                    (command) -> bloomCommand(
+                                        command.getSource(),
+                                        Vec3Argument.getCoordinates(command, "at"),
+                                        IntegerArgumentType.getInteger(command, "charge"),
+                                        IntegerArgumentType.getInteger(command, "cursors"),
+                                        BoolArgumentType.getBool(command, "worldgen")
+                                    )
                                 )
                             )
                         )
@@ -55,7 +70,7 @@ public class SculkBloomCommand {
         );
     }
 
-    private static int bloomCommand(CommandSourceStack source, Coordinates at, int charge, int cursors) throws CommandSyntaxException {
+    private static int bloomCommand(CommandSourceStack source, Coordinates at, int charge, int cursors, boolean worldgen) throws CommandSyntaxException {
         // Code extrapolated from net.minecraft.server.commands.TeleportCommand.teleportToPos
         Vec3 vec3 = at.getPosition(source);
         ServerLevel level = source.getLevel();
@@ -73,7 +88,7 @@ public class SculkBloomCommand {
             set.add(RelativeMovement.Z);
         }
 
-        SculkBloomInst bloomInst = new SculkBloomInst(level, vec3, set);
+        SculkBloomInst bloomInst = new SculkBloomInst(level, vec3, set, worldgen);
         bloomInst.bloomParticles(null);
         bloomInst.addCursors(charge, cursors);
         EventHandler.addBloom(bloomInst);

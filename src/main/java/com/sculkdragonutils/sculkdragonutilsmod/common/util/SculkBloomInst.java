@@ -32,12 +32,16 @@ public class SculkBloomInst {
     private final Vec3 vec3;
     private final @Nullable Set<RelativeMovement> set;
 
-    public SculkBloomInst(ServerLevel level, Vec3 vec3, @Nullable Set<RelativeMovement> set) {
+    public SculkBloomInst(ServerLevel level, Vec3 vec3, @Nullable Set<RelativeMovement> set, boolean worldgen) {
         this.level = level;
         this.vec3 = vec3;
         this.set = set;
         this.blockpos = BlockPos.containing(vec3);
-        this.sculkSpreader = SculkSpreader.createLevelSpreader();
+        if (!worldgen) {
+            this.sculkSpreader = SculkSpreader.createLevelSpreader();
+        } else {
+            this.sculkSpreader = SculkSpreader.createWorldGenSpreader();
+        }
         this.randomsource = level.getRandom();
     }
 

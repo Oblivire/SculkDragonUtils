@@ -90,7 +90,7 @@ public class EventHandler {
             if (SculkBloomInst.canSpreadFrom(level, target_loc)) {
                 if (!level.isClientSide()) {  // Only bloom on server
                     float potency = Objects.requireNonNull(player.getEffect(ModEffects.SCULK_BLOOM_EFFECT)).getAmplifier();
-                    SculkBloomInst newInst = new SculkBloomInst((ServerLevel) level, target_loc.getCenter(), null);
+                    SculkBloomInst newInst = new SculkBloomInst((ServerLevel) level, target_loc.getCenter(), null, false);
                     newInst.bloomParticles(player.blockPosition().getCenter());
                     newInst.addCursors(floor(exp * (1.0F + (potency * 0.1F))), 1);
                     addBloom(newInst);
