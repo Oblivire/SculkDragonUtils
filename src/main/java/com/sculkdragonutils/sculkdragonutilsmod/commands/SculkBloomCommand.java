@@ -74,6 +74,7 @@ public class SculkBloomCommand {
         }
 
         SculkBloomInst bloomInst = new SculkBloomInst(level, vec3, set);
+        bloomInst.bloomParticles(null);
         bloomInst.addCursors(charge, cursors);
         EventHandler.addBloom(bloomInst);
 

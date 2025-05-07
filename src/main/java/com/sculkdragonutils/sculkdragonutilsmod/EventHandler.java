@@ -4,20 +4,24 @@ import com.sculkdragonutils.sculkdragonutilsmod.common.packet.SculkShaderPacket;
 import com.sculkdragonutils.sculkdragonutilsmod.common.util.SculkBloomInst;
 import com.sculkdragonutils.sculkdragonutilsmod.common.util.ShaderUtil;
 import com.sculkdragonutils.sculkdragonutilsmod.effect.ModEffects;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.VanillaGameEvent;
+import net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +72,26 @@ public class EventHandler {
                     ShaderUtil.loadAndCloseUnsafe("null", true);
                 }
                 PacketDistributor.sendToPlayer((ServerPlayer) event.getEntity(), new SculkShaderPacket(false));
+            }
+        }
+    }
+    @SubscribeEvent
+    public void onExpDrop(LivingExperienceDropEvent event) {
+        // Yes I am aware this is too many if conditions, but I don't know if I care enough to fix it
+        int exp = event.getDroppedExperience();
+        @Nullable Player player = event.getAttackingPlayer();
+        if (player != null && player.hasEffect(ModEffects.SCULK_BLOOM_EFFECT) && exp < 50) {
+            Entity target = event.getEntity();
+            BlockPos target_loc = target.blockPosition();
+            Level level = target.level();
+            if (SculkBloomInst.canSpreadFrom(level, target_loc)) {
+                if (!level.isClientSide()) {  // Only bloom on server
+                    SculkBloomInst newInst = new SculkBloomInst((ServerLevel) level, target_loc.getCenter(), null);
+                    newInst.bloomParticles(player.blockPosition().getCenter());
+                    newInst.addCursors(exp, 1);
+                    addBloom(newInst);
+                }
+                event.setCanceled(true);  // Cancel on both client and server
             }
         }
     }

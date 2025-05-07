@@ -24,6 +24,9 @@ public class ModEffects {
     public static final Holder<MobEffect> SCULK_SIGHT_EFFECT = MOB_EFFECTS.register("sculk_sight",
             () -> new SculkSightEffect(MobEffectCategory.NEUTRAL, 0x000000));
 
+    public static final Holder<MobEffect> SCULK_BLOOM_EFFECT = MOB_EFFECTS.register("sculk_bloom",
+            () -> new SculkBloomEffect(MobEffectCategory.NEUTRAL, 0x000000));
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

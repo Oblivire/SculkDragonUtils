@@ -2,19 +2,26 @@ package com.sculkdragonutils.sculkdragonutilsmod.common.util;
 
 import net.minecraft.core.BlockPos;
 //import net.minecraft.core.Direction;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 //import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.RelativeMovement;
 //import net.minecraft.world.entity.player.Player;
 //import net.minecraft.world.level.block.Blocks;
 //import net.minecraft.world.level.block.SculkShriekerBlock;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SculkBehaviour;
 import net.minecraft.world.level.block.SculkSpreader;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
+import javax.annotation.Nullable;
 import java.util.Set;
 
 public class SculkBloomInst {
@@ -23,9 +30,9 @@ public class SculkBloomInst {
     private final RandomSource randomsource;
     private final BlockPos blockpos;
     private final Vec3 vec3;
-    private final Set<RelativeMovement> set;
+    private final @Nullable Set<RelativeMovement> set;
 
-    public SculkBloomInst(ServerLevel level, Vec3 vec3, Set<RelativeMovement> set) {
+    public SculkBloomInst(ServerLevel level, Vec3 vec3, @Nullable Set<RelativeMovement> set) {
         this.level = level;
         this.vec3 = vec3;
         this.set = set;
@@ -35,11 +42,23 @@ public class SculkBloomInst {
     }
 
     public void addCursors(int charge, int cursorNum) {
-        level.sendParticles(ParticleTypes.SCULK_SOUL, vec3.x + (double)0.5F, vec3.y + 1.15, vec3.z + (double)0.5F, 2, 0.2, 0.0F, 0.2, 0.0F);
-        level.playSound(null, blockpos, SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.BLOCKS, 2.0F, 0.6F + randomsource.nextFloat() * 0.4F);
         for (int k = 0; k < cursorNum; k++) {
             sculkSpreader.addCursors(blockpos, charge);
         }
+    }
+
+    public void bloomParticles(@Nullable Vec3 pos) {
+        Vec3 loc;
+        BlockPos blockAt;
+        if (pos != null) {
+            loc = pos;
+            blockAt = BlockPos.containing(pos);
+        } else {
+            loc = vec3;
+            blockAt = blockpos;
+        }
+        level.sendParticles(ParticleTypes.SCULK_SOUL, loc.x, loc.y, loc.z, 2, 0, 0, 0, 0.0F);
+        level.playSound(null, blockAt, SoundEvents.SCULK_CATALYST_BLOOM, SoundSource.BLOCKS, 2.0F, 0.6F + randomsource.nextFloat() * 0.4F);
     }
 
     public boolean isDone() {
@@ -93,5 +112,21 @@ public class SculkBloomInst {
                 );
             }
         }*/
+    }
+
+    public static boolean canSpreadFrom(LevelAccessor level, BlockPos pos) {
+        // From net.minecraft.world.level.levelgen.feature.SculkPatchFeature
+        BlockState blockstate = level.getBlockState(pos);
+        if (blockstate.getBlock() instanceof SculkBehaviour) {
+            return true;
+        } else {
+            boolean block_valid =
+                    blockstate.isAir() ||
+                    blockstate.is(BlockTags.REPLACEABLE_BY_TREES) ||
+                    (blockstate.is(Blocks.WATER) && blockstate.getFluidState().isSource());
+            return (block_valid) && Direction.stream()
+                    .map(pos::relative)
+                    .anyMatch(blockiter -> level.getBlockState(blockiter).isCollisionShapeFullBlock(level, blockiter));
+        }
     }
 }
