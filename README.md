@@ -17,7 +17,7 @@ sculkdragonutils:sculk_sight - This adds the Sobel shader from the 1.9 SuperSecr
 sculkdragonutils:reverberating - This is a dummy effect that does nothing, but Sculk Shriekers will apply it to nearby mobs.
 You can use this as a trigger or check for other things.
 
-sculkdragonutils:sculk_bloom (v1.1 only) - This makes kills worth below 50 exp (To exclude wither, ender dragon, and modded bosses) to spawn a sculk spreader if it's able to.  Potency acts as a multiplier, with 10% added effect per level.
+sculkdragonutils:sculk_bloom (v1.1 only) - This makes kills worth below 50 exp (To exclude wither, ender dragon, and modded bosses) to spawn a sculk bloom if it's able to instead of exp.  Potency acts as a multiplier, with 10% added effect per level. This also gives you 2 food and 10% saturation on a kill, also modified by the potency.
 
 List of Commands (v1.1 only):
 
