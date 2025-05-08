@@ -12,6 +12,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffectUtil;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -89,10 +90,12 @@ public class EventHandler {
             Level level = target.level();
             if (SculkBloomInst.canSpreadFrom(level, target_loc)) {
                 if (!level.isClientSide()) {  // Only bloom on server
-                    float potency = Objects.requireNonNull(player.getEffect(ModEffects.SCULK_BLOOM_EFFECT)).getAmplifier();
+                    float potency = 1.0F + (Objects.requireNonNull(player.getEffect(ModEffects.SCULK_BLOOM_EFFECT)).getAmplifier()  * 0.1F);
+                    FoodData player_food = player.getFoodData(); // Putting here for now, I don't want to add another effect
+                    player_food.eat(floor(2 * potency), 0.1F * potency);
                     SculkBloomInst newInst = new SculkBloomInst((ServerLevel) level, target_loc.getCenter(), null, false);
                     newInst.bloomParticles(player.blockPosition().getCenter());
-                    newInst.addCursors(floor(exp * (1.0F + (potency * 0.1F))), 1);
+                    newInst.addCursors(floor(exp * potency), 1);
                     addBloom(newInst);
                 }
                 event.setCanceled(true);  // Cancel on both client and server
