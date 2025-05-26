@@ -49,33 +49,39 @@ public class EventHandler {
     @SubscribeEvent
     public void onEffectAdded(MobEffectEvent.Added event) {
         Level level = event.getEntity().level();
-        if (event.getEntity() instanceof Player && event.getEffectInstance().is(ModEffects.SCULK_SIGHT_EFFECT)) {
+        if (event.getEntity() instanceof Player player && event.getEffectInstance().is(ModEffects.SCULK_SIGHT_EFFECT)) {
             if (level.isClientSide()) {
                 ShaderUtil.loadAndCloseUnsafe("sobel.json", false);
             }
-            PacketDistributor.sendToPlayer((ServerPlayer) event.getEntity(), new SculkShaderPacket(true));
+            if (player instanceof ServerPlayer serverPlayer) {
+                PacketDistributor.sendToPlayer(serverPlayer, new SculkShaderPacket(true));
+            }
         }
     }
     @SubscribeEvent
     public void onEffectRemoved(MobEffectEvent.Remove event) {
         Level level = event.getEntity().level();
-        if (event.getEntity() instanceof Player && event.getEffect().is(ModEffects.SCULK_SIGHT_EFFECT)) {
+        if (event.getEntity() instanceof Player player && event.getEffect().is(ModEffects.SCULK_SIGHT_EFFECT)) {
             if (level.isClientSide()) {
                 ShaderUtil.loadAndCloseUnsafe("null", true);
             }
-            PacketDistributor.sendToPlayer((ServerPlayer) event.getEntity(), new SculkShaderPacket(false));
+            if (player instanceof ServerPlayer serverPlayer) {
+                PacketDistributor.sendToPlayer(serverPlayer, new SculkShaderPacket(false));
+            }
         }
     }
     @SubscribeEvent
     public void onEffectExpired(MobEffectEvent.Expired event) {
         Level level = event.getEntity().level();
-        if (event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player player) {
             assert event.getEffectInstance() != null;
             if (event.getEffectInstance().is(ModEffects.SCULK_SIGHT_EFFECT)) {
                 if (level.isClientSide()) {
                     ShaderUtil.loadAndCloseUnsafe("null", true);
                 }
-                PacketDistributor.sendToPlayer((ServerPlayer) event.getEntity(), new SculkShaderPacket(false));
+                if (player instanceof ServerPlayer serverPlayer) {
+                    PacketDistributor.sendToPlayer(serverPlayer, new SculkShaderPacket(false));
+                }
             }
         }
     }
