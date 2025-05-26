@@ -1,6 +1,6 @@
 package com.sculkdragonutils.sculkdragonutilsmod;
 
-import com.sculkdragonutils.sculkdragonutilsmod.commands.SculkBloomCommand;
+//import com.sculkdragonutils.sculkdragonutilsmod.commands.SculkBloomCommand;
 import com.sculkdragonutils.sculkdragonutilsmod.common.packet.PayloadHandler;
 import com.sculkdragonutils.sculkdragonutilsmod.common.packet.SculkShaderPacket;
 import com.sculkdragonutils.sculkdragonutilsmod.effect.ModEffects;
@@ -11,12 +11,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.bus.api.SubscribeEvent;
+//import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.config.ModConfig;
+//import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
-import org.jetbrains.annotations.NotNull;
+//import org.jetbrains.annotations.NotNull;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(SculkDragonUtils.MODID)
@@ -81,7 +81,7 @@ public class SculkDragonUtils
         //modEventBus.addListener(this::addCreative);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        //modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
 

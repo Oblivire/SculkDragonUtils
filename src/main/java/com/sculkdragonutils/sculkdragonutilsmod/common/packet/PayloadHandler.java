@@ -1,6 +1,5 @@
 package com.sculkdragonutils.sculkdragonutilsmod.common.packet;
 
-import com.sculkdragonutils.sculkdragonutilsmod.SculkDragonUtils;
 import com.sculkdragonutils.sculkdragonutilsmod.common.util.ShaderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -13,11 +12,9 @@ public class PayloadHandler {
             context.enqueueWork(() -> {
                         String shader = "";
                         if (!data.toUse()) {
-                            SculkDragonUtils.LOGGER.info("Received packet to shutdown shader!");
                             Minecraft.getInstance().gameRenderer.shutdownEffect();
                             shader = "null";
                         } else {
-                            SculkDragonUtils.LOGGER.info("Received packet to start shader!");
                             shader = "sobel.json";
                         }
 
