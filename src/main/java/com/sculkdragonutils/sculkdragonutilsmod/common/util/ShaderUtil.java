@@ -32,8 +32,9 @@ public class ShaderUtil {
 
     @SubscribeEvent
     public static void onRenderGameOverlay(ClientTickEvent.Post event) {
-        if (isDefaultShader || localShaderPath.contains("null")) {
+        if (ToLoadShader & isDefaultShader) {
             Minecraft.getInstance().gameRenderer.shutdownEffect();
+            ToLoadShader = false;
         }
         if (ToLoadShader & !isDefaultShader) {
             Minecraft.getInstance().gameRenderer.loadEffect(ResourceLocation.fromNamespaceAndPath("sculkdragonutils", "shaders/"+localShaderPath));
@@ -62,6 +63,5 @@ public class ShaderUtil {
         Minecraft.getInstance().setScreen(null);
         isDefaultShader = isDefaultIn;
         ToLoadShader = true;
-
     }
 }

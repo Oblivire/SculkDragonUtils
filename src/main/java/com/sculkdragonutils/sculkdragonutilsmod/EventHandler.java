@@ -4,6 +4,7 @@ import com.sculkdragonutils.sculkdragonutilsmod.common.packet.SculkShaderPacket;
 import com.sculkdragonutils.sculkdragonutilsmod.common.util.SculkBloomInst;
 import com.sculkdragonutils.sculkdragonutilsmod.common.util.ShaderUtil;
 import com.sculkdragonutils.sculkdragonutilsmod.effect.ModEffects;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
@@ -49,11 +50,14 @@ public class EventHandler {
     @SubscribeEvent
     public void onEffectAdded(MobEffectEvent.Added event) {
         Level level = event.getEntity().level();
-        if (event.getEntity() instanceof Player player && event.getEffectInstance().is(ModEffects.SCULK_SIGHT_EFFECT)) {
-            if (level.isClientSide()) {
+        if (event.getEffectInstance().is(ModEffects.SCULK_SIGHT_EFFECT)) {
+            if (event.getEntity().hasEffect(ModEffects.SCULK_SIGHT_EFFECT)) {
+                return;
+            }
+            if (level.isClientSide() && event.getEntity() instanceof LocalPlayer) {
                 ShaderUtil.loadAndCloseUnsafe("sobel.json", false);
             }
-            if (player instanceof ServerPlayer serverPlayer) {
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 PacketDistributor.sendToPlayer(serverPlayer, new SculkShaderPacket(true));
             }
         }
@@ -61,11 +65,11 @@ public class EventHandler {
     @SubscribeEvent
     public void onEffectRemoved(MobEffectEvent.Remove event) {
         Level level = event.getEntity().level();
-        if (event.getEntity() instanceof Player player && event.getEffect().is(ModEffects.SCULK_SIGHT_EFFECT)) {
-            if (level.isClientSide()) {
+        if (event.getEffect().is(ModEffects.SCULK_SIGHT_EFFECT)) {
+            if (level.isClientSide() && event.getEntity() instanceof LocalPlayer) {
                 ShaderUtil.loadAndCloseUnsafe("null", true);
             }
-            if (player instanceof ServerPlayer serverPlayer) {
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
                 PacketDistributor.sendToPlayer(serverPlayer, new SculkShaderPacket(false));
             }
         }
@@ -73,15 +77,13 @@ public class EventHandler {
     @SubscribeEvent
     public void onEffectExpired(MobEffectEvent.Expired event) {
         Level level = event.getEntity().level();
-        if (event.getEntity() instanceof Player player) {
-            assert event.getEffectInstance() != null;
-            if (event.getEffectInstance().is(ModEffects.SCULK_SIGHT_EFFECT)) {
-                if (level.isClientSide()) {
-                    ShaderUtil.loadAndCloseUnsafe("null", true);
-                }
-                if (player instanceof ServerPlayer serverPlayer) {
-                    PacketDistributor.sendToPlayer(serverPlayer, new SculkShaderPacket(false));
-                }
+        assert event.getEffectInstance() != null;
+        if (event.getEffectInstance().is(ModEffects.SCULK_SIGHT_EFFECT)) {
+            if (level.isClientSide() && event.getEntity() instanceof LocalPlayer) {
+                ShaderUtil.loadAndCloseUnsafe("null", true);
+            }
+            if (event.getEntity() instanceof ServerPlayer serverPlayer) {
+                PacketDistributor.sendToPlayer(serverPlayer, new SculkShaderPacket(false));
             }
         }
     }
